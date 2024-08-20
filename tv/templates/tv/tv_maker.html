@@ -110,11 +110,10 @@
     }
     for (let index = 0; index < dimensions.groups.length ; index++) {
       const cell = document.createElement("td");
-      const cellText = document.createTextNode(`${dimensions.elem[index]}`);
+      const cellText = document.createTextNode(`${dimensions.groups[index]}`);
       cell.appendChild(cellText);
       row.appendChild(cell);
     }
-
 
     tblBody.appendChild(row);
 
