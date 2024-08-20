@@ -1,0 +1,179 @@
+{% extends 'home/main_template.html' %}
+{% block M %}
+
+<title>Módulo 01 do BMU</title>
+
+<p>Crie a sua tabela verdade para comparar com os seus exercicios! </p>
+<ul>
+  <li>Faça uso dos parenteses.Para verificação é necessário parenteses. <b>Ex: ((p^q)↔(p⌄q))</b> </li>
+  <li>User letras minusculas para elementos e maisculas para conjuntos</li>
+  <li>Cada elemento ou conjunto deve ser representado por caracter único</li>
+  <li><b>No momento só funciona para elementos</b></li>
+  <li>Coloque a expressão lógica para a qual deseja ver a tabela verdade</li>
+</ul>
+
+<input type="text" name="Logical_expression" id="LogExp">
+
+<!-- Symbol buttons -->
+<input type="button" value="↔" onclick="addSymbol('↔')" />
+<input type="button" value="→" onclick="addSymbol('→')" />
+<input type="button" value="⌃" onclick="addSymbol('⌃')" />
+<input type="button" value="⌄" onclick="addSymbol('⌄')" />
+<!-- <input type="button" value="⌽" onclick="addSymbol('⌽')" />
+<input type="button" value="⊂" onclick="addSymbol('⊂')" />
+<input type="button" value="⊃" onclick="addSymbol('⊃')" /> -->
+
+
+<!-- Start table  -->
+<input type="button" value="Gerar tabela" onclick="createTable()" />
+
+<script>
+
+  function addSymbol(symbol) {
+    let exp = document.getElementById('LogExp').value;
+    exp = exp + symbol;
+    document.getElementById('LogExp').value = exp;
+  }
+
+  // criação das tabelas verdade a partir dos inputs do usuário
+  function createTable() {
+    //    Get the expression you want to create the table for.
+    const exp = document.getElementById('LogExp').value;
+    const tvalues = parse_entry();
+    printTable(tvalues);
+  }
+
+
+  // Make a list with all the individual expressions to be interpreted.
+  function parse_entry() {
+    // Get the separators and the expression values 
+    const list = ['↔', '→', '⌃', '⌄','~','⌽' ,'⊂' ,'⊃'];
+    let starter = '(';
+    let end = ')';
+    let elements = [];
+    let groups = [];
+    let calculations = [];
+    const exp = document.getElementById('LogExp').value;
+    let aux = exp;
+    let counter = 0;
+    for (let index = 0; index < exp.length; index++) {
+      let letter = exp[index];
+      // Check if uppercase
+      if (letter >= 'A' && letter <= 'Z') {
+        // console.log("Uppercase");
+        counter += 1;
+        groups.push(letter);
+        console.log(elements);
+      }
+      // Check if lowercase
+      if (letter >= 'a' && letter <= 'z') {
+        // console.log("Lowercase");
+        // console.log(counter);
+        counter += 1;
+        elements.push(letter);
+        console.log(elements);
+      }
+    }
+
+    const n_elems = elements.length;
+    const n_rows = n_elems ** 2;
+    const n_columns = n_elems + groups.length;
+    console.log(n_elems, n_columns, n_rows);
+
+    breakdown = {
+      'elem': elements,
+      'groups': groups,
+      'rows': n_rows,
+      'columns': n_columns,
+      'logics': 'a'
+    }
+    return breakdown;
+  }
+
+
+  function printTable(dimensions) {
+    // Generate table 
+
+    const rows = dimensions.rows;
+    const columns = dimensions.columns;
+
+    const tbl = document.createElement("table");
+    const tblBody = document.createElement("tbody");
+
+    // HEADER
+    const row = document.createElement("tr");
+    for (let index = 0; index < columns; index++) {
+      const cell = document.createElement("td");
+      const cellText = document.createTextNode(`${dimensions.elem[index]}`);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+    for (let index = 0; index < dimensions.groups.length ; index++) {
+      const cell = document.createElement("td");
+      const cellText = document.createTextNode(`${dimensions.elem[index]}`);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    }
+
+
+    tblBody.appendChild(row);
+
+    // DATA
+    for (let i = 0; i < rows; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+      // creating all cells
+      for (let j = 0; j < columns; j++) {
+        // Create a <td> element and a text node, make the text
+        // node the contents of the <td>, and put the <td> at
+        // the end of the table row
+        const cell = document.createElement("td");
+        const cellText = document.createTextNode(`cell in row ${i}, column ${j}`);
+        cell.appendChild(cellText);
+        row.appendChild(cell);
+      }
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    }
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    document.body.appendChild(tbl);
+    // sets the border attribute of tbl to '2'
+    tbl.setAttribute("border", "2");
+  }
+
+  //  Run through the list and do individual calculations
+  function calcResults(list) {
+
+
+
+  }
+
+  // function addArrow() {
+  //   let exp = document.getElementById('LogExp').value;
+  //   exp = exp + "→";
+  //   document.getElementById('LogExp').value = exp;
+  // }
+
+  // function addAnd() {
+  //   let exp = document.getElementById('LogExp').value;
+  //   exp = exp + "⌃";
+  //   document.getElementById('LogExp').value = exp;
+  // }
+
+  // function addOr() {
+  //   let exp = document.getElementById('LogExp').value;
+  //   exp = exp + "⌄";
+  //   document.getElementById('LogExp').value = exp;
+  // }
+
+  // function addOr() {
+  //   let exp = document.getElementById('LogExp').value;
+  //   exp = exp + "⌽";
+  //   document.getElementById('LogExp').value = exp;
+  // }
+
+</script>
+
+{% endblock %}

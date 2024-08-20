@@ -1,0 +1,12 @@
+{% extends 'home/main_template.html' %}
+
+{% block M %}
+<p> Bem vindo a central de módulos de ensino de Matemática discreta. Aqui você testa sua lógica e matemática e pode praticar como quiser.</p>
+
+<list>
+    {% for a,b  in modules.items %}
+     <li><a href = "/{{ a }} " >{{ b }}</a></li>
+    {% endfor %}  
+</list>
+
+    {% endblock %}
