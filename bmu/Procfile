@@ -1,1 +1,1 @@
-web: gunicorn bmu.wsgi
+web: gunicorn md-beam-me-up.wsgi
